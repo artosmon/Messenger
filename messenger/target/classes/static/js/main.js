@@ -1,24 +1,29 @@
 'use strict';
 
-const usernamePage = document.querySelector('#username-page');
-const chatPage = document.querySelector('#chat-page');
-const usernameForm = document.querySelector('#usernameForm');
+// const usernamePage = document.querySelector('#username-page');
+// const chatPage = document.querySelector('#chat-page');
+// const usernameForm = document.querySelector('#usernameForm');
 const messageForm = document.querySelector('#messageForm');
 const messageInput = document.querySelector('#message');
 const connectingElement = document.querySelector('.connecting');
 const chatArea = document.querySelector('#chat-messages');
 const logout = document.querySelector('#logout');
 
+let username = null;
 let stompClient = null;
-let fullname = null;
 let selectedUserId = null;
 
-function connect(event) {
-    fullname = document.querySelector('#fullname').value.trim();
 
-    if (fullname) {
-        usernamePage.classList.add('hidden');
-        chatPage.classList.remove('hidden');
+async function connect(event) {
+    console.log("hello");
+    // username = document.querySelector('#username').value.trim();
+    const usernameResponse = await fetch(`/username`);
+    const user = await usernameResponse.json();
+    console.log(user);
+    username = user.name;
+    console.log("name: "+username)
+    // username = 'max';
+    if (username) {
 
         const socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
@@ -29,24 +34,26 @@ function connect(event) {
 }
 
 
+
+
 function onConnected() {
-    stompClient.subscribe(`/topic/messages/users.${fullname}`, onMessageReceived);
+    stompClient.subscribe(`/topic/messages/users.${username}`, onMessageReceived);
     stompClient.subscribe(`/topic.addUser`, onMessageReceived);
 
-    stompClient.send("/app/user.addUser",
-        {},
-        JSON.stringify({name: fullname})
-    );
-    document.querySelector('#connected-user-fullname').textContent = fullname;
+    try {
+        document.querySelector('#connected-user-fullname').textContent = username;
+    }catch (e){}
     DisplayUsers().then();
 }
 
 async function DisplayUsers() {
     const connectedUsersResponse = await fetch('/users');
     let connectedUsers = await connectedUsersResponse.json();
-    connectedUsers = connectedUsers.filter(user => user.name !== fullname);
+    connectedUsers = connectedUsers.filter(user => user.name !== username);
     const connectedUsersList = document.getElementById('connectedUsers');
-    connectedUsersList.innerHTML = '';
+    // try {
+        connectedUsersList.innerHTML = '';
+    // }catch (e){}
 
     connectedUsers.forEach(user => {
         appendUserElement(user, connectedUsersList);
@@ -74,13 +81,21 @@ function appendUserElement(user, connectedUsersList) {
     receivedMsgs.textContent = '0';
     receivedMsgs.classList.add('nbr-msg', 'hidden');
 
-    listItem.appendChild(userImage);
-    listItem.appendChild(usernameSpan);
-    listItem.appendChild(receivedMsgs);
-
-    listItem.addEventListener('click', userItemClick);
-
-    connectedUsersList.appendChild(listItem);
+    // try {
+        listItem.appendChild(userImage);
+    // }catch (e){}
+    // try {
+        listItem.appendChild(usernameSpan);
+    // }catch (e){}
+    // try {
+        listItem.appendChild(receivedMsgs);
+        // }catch (e){}
+        // try {
+        listItem.addEventListener('click', userItemClick);
+        // }catch (e){}
+        // try {
+        connectedUsersList.appendChild(listItem);
+        // }catch (e){}
 }
 
 function userItemClick(event) {
@@ -105,7 +120,7 @@ function displayMessage(senderId, content) {
     const messageContainer = document.createElement('div');
     console.log('displayMessage');
     messageContainer.classList.add('message');
-    if (senderId === fullname) {
+    if (senderId === username) {
         messageContainer.classList.add('sender');
     } else {
         messageContainer.classList.add('receiver');
@@ -117,7 +132,7 @@ function displayMessage(senderId, content) {
 }
 
 async function fetchAndDisplayUserChat() {
-    const userChatResponse = await fetch(`/messages/${fullname}/${selectedUserId}`);
+    const userChatResponse = await fetch(`/messages/${username}/${selectedUserId}`);
     const userChat = await userChatResponse.json();
     chatArea.innerHTML = '';
     console.log('fetchAndDisplayUserChat')
@@ -138,14 +153,14 @@ function sendMessage(event) {
     const messageContent = messageInput.value.trim();
     if (messageContent && stompClient) {
         const chatMessage = {
-            senderId: fullname,
+            senderId: username,
             recipientId: selectedUserId,
             content: messageInput.value.trim(),
             timestamp: new Date()
         };
         stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
         console.log('sendMessage');
-        displayMessage(fullname, messageInput.value.trim());
+        displayMessage(username, messageInput.value.trim());
         messageInput.value = '';
     }
     chatArea.scrollTop = chatArea.scrollHeight;
@@ -166,7 +181,9 @@ async function onMessageReceived(payload) {
     if (selectedUserId) {
         document.querySelector(`#${selectedUserId}`).classList.add('active');
     } else {
-        messageForm.classList.add('hidden');
+        // try {
+            messageForm.classList.add('hidden');
+        // }catch (e){}
     }
 
     const notifiedUser = document.querySelector(`#${message.senderId}`);
@@ -178,14 +195,22 @@ async function onMessageReceived(payload) {
 }
 
 function onLogout() {
-    stompClient.send("/app/user.disconnectUser",
-        {},
-        JSON.stringify({name: fullname})
-    );
-    window.location.reload();
+    // stompClient.send("/app/user.disconnectUser",
+    //     {},
+    //     JSON.stringify({name: username})
+    // );
+    // window.location.;
 }
 
-usernameForm.addEventListener('submit', connect, true); // step 1
-messageForm.addEventListener('submit', sendMessage, true);
-logout.addEventListener('click', onLogout, true);
+// usernameForm.addEventListener('submit', connect, true);
+// try {
+    window.addEventListener('load', connect);
+
+    messageForm.addEventListener('submit', sendMessage, true);
+// } catch (e){}
+// try {
+    logout.addEventListener('click', onLogout, true);
+// } catch (e){}
 window.onbeforeunload = () => onLogout();
+
+

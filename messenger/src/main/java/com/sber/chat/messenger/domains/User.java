@@ -14,19 +14,10 @@ import lombok.experimental.FieldDefaults;
 public class User {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    Long id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    @Column(unique = true)
     String name;
-
-//    Status status;
-
-//    public enum Status {
-//        ONLINE,
-//        OFFLINE
-//    }
-
-
-//    String password;
+    String password;
 
 }

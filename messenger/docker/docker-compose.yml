@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  db:
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=admin
+      - POSTGRES_
+    image: postgres:16.2-bullseye
+
+  Chat:
+    build:
+      context: .
+
+    image: messenger
+    network_mode: host
+
+    environment:
+      - "JAVA_OPTS="
+
+    restart: always
+
+

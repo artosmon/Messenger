@@ -5,7 +5,6 @@ spring:
       host: localhost
       username: guest
       password: guest
-#      port: 5672
     jpa:
       database: POSTGRESQL
       show-sql: true

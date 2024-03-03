@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>SberKot Fun</title>
+</head>
+<body>
+
+<h2>СберКот Чат</h2>
+
+<div class="user-form" id="username-page-sign">
+    <h2>Авторизация:</h2>
+    <form id="usernameFormSign" method="post">
+
+        <label for="usernameS">Введите логин:</label>
+        <input type="text" id="usernameS" name="usernameS" required>
+
+        <label for="passwordS">Введите пароль:</label>
+        <input type="password" id="passwordS" name="passwordS" required>
+
+        <button type="submit">Авторизоваться </button>
+        <br>
+        <br>
+<!--        <form action="/login">-->
+<!--            <input onclick="window.location.href = '/login';" type="submit" value="Уже есть аккаунт">-->
+<!--        </form>-->
+        <button onclick="location.href='/login'" type="button">
+            Уже есть аккаунт?</button>
+
+    </form>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/js/signup.js"></script>
+</body>
+</html>

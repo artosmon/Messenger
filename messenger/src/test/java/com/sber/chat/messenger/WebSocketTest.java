@@ -11,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.reactive.function.client.WebClient;
+//import org.springframework.web.reactive.function.client.WebClient;
 
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -27,7 +27,7 @@ public class WebSocketTest {
     @Value("${local.server.port}")
     private int port;
 
-    private static WebClient client;
+//    private static WebClient client;
 
     @Autowired
     ObjectMapper mapper;

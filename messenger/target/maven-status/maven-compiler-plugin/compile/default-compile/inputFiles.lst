@@ -1,0 +1,17 @@
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/domains/Message.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/services/UserService.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/config/WebSocketConfig.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/security/MyUserDetailsService.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/controllers/UserController.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/security/MyUserDetails.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/domains/User.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/security/WebSecurityConfig.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/ChatApplication.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/services/MessageService.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/controllers/MessageController.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/repositories/ChatRoomRepo.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/repositories/UserRepo.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/config/MvcConfig.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/repositories/MessageRepo.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/domains/ChatRoom.java
+/home/artosmon/Desktop/gitHub/Messenger/messenger/src/main/java/com/sber/chat/messenger/services/ChatRoomService.java

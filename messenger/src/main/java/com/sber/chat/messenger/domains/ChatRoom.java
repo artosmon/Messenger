@@ -17,11 +17,8 @@ import java.util.UUID;
 public class ChatRoom {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    long id;
-@Builder.Default
+    @Builder.Default
     String chatId = UUID.randomUUID().toString().substring(0,4);
-//    String name;
     String senderName;
     String recipientName;
 

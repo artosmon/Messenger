@@ -36,12 +36,7 @@ public class ChatRoomService {
                 .recipientName(recipientId)
                 .build();
 
-//        ChatRoom recipient = ChatRoom.builder()
-//                .senderName(recipientId)
-//                .recipientName(senderId)
-//                .build();
         chatRoomRepo.save(sender);
-//        chatRoomRepo.save(recipient);
         return sender.getChatId();
     }
 
