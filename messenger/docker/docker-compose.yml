@@ -1,26 +1,23 @@
 version: "3"
 
 services:
-  db:
-    container_name: db
-    ports:
-      - "5432:5432"
+  postgres:
+    container_name: 'java-postgres'
     environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_USER=admin
-      - POSTGRES_
+      - 'POSTGRES_PASSWORD=admin'
+      - 'POSTGRES_USER=admin'
+      - 'POSTGRES_DB=database'
     image: postgres:16.2-bullseye
 
-  Chat:
-    build:
-      context: .
-
-    image: messenger
-    network_mode: host
-
+  app:
+    build: ./
+    container_name: 'java-app'
+    ports:
+      - 80:8080
+    depends_on:
+      - postgres
     environment:
-      - "JAVA_OPTS="
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/database?
 
-    restart: always
 
 
