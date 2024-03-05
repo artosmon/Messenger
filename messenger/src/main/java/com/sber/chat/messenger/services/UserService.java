@@ -24,7 +24,7 @@ public class UserService {
 
     public void saveUser(User user) {
         if(userRepo.findByName(user.getName()).isEmpty()) {
-            log.info(String.format("       LOG: saveUser name: %s, password: %s",user.getName(),user.getPassword()));
+            log.info(String.format("LOG: saveUser name: %s, password: %s",user.getName(),user.getPassword()));
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepo.save(user);
         }

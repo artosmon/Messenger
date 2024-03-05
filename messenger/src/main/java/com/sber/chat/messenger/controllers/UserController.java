@@ -24,7 +24,11 @@ import java.util.List;
 public class UserController {
 
     UserService userService;
-    @PostMapping("/user.addUser")
+
+
+    private final String FETCH_ADD_USER = "/user.addUser";
+
+    @PostMapping(FETCH_ADD_USER)
     @ResponseBody
     public User addUser(@RequestBody User user) {
         userService.saveUser(user);

@@ -1,8 +1,6 @@
 'use strict';
 
-// const usernamePage = document.querySelector('#username-page');
-// const chatPage = document.querySelector('#chat-page');
-// const usernameForm = document.querySelector('#usernameForm');
+
 const messageForm = document.querySelector('#messageForm');
 const messageInput = document.querySelector('#message');
 const connectingElement = document.querySelector('.connecting');
@@ -15,14 +13,17 @@ let selectedUserId = null;
 
 
 async function connect(event) {
-    console.log("hello");
-    // username = document.querySelector('#username').value.trim();
-    const usernameResponse = await fetch(`/username`);
-    const user = await usernameResponse.json();
-    console.log(user);
-    username = user.name;
-    console.log("name: "+username)
-    // username = 'max';
+    username = localStorage.getItem("usernameKey");
+
+    if(username == null) {
+        const usernameResponse = await fetch(`/username`);
+        const user = await usernameResponse.json();
+        console.log(user);
+        username = user.name;
+
+        localStorage.setItem("usernameKey", username);
+    }
+
     if (username) {
 
         const socket = new SockJS('/ws');
@@ -51,9 +52,8 @@ async function DisplayUsers() {
     let connectedUsers = await connectedUsersResponse.json();
     connectedUsers = connectedUsers.filter(user => user.name !== username);
     const connectedUsersList = document.getElementById('connectedUsers');
-    // try {
+
         connectedUsersList.innerHTML = '';
-    // }catch (e){}
 
     connectedUsers.forEach(user => {
         appendUserElement(user, connectedUsersList);
@@ -81,21 +81,17 @@ function appendUserElement(user, connectedUsersList) {
     receivedMsgs.textContent = '0';
     receivedMsgs.classList.add('nbr-msg', 'hidden');
 
-    // try {
         listItem.appendChild(userImage);
-    // }catch (e){}
-    // try {
+
         listItem.appendChild(usernameSpan);
-    // }catch (e){}
-    // try {
+
         listItem.appendChild(receivedMsgs);
-        // }catch (e){}
-        // try {
+
         listItem.addEventListener('click', userItemClick);
-        // }catch (e){}
-        // try {
+
+
         connectedUsersList.appendChild(listItem);
-        // }catch (e){}
+
 }
 
 function userItemClick(event) {
@@ -181,9 +177,9 @@ async function onMessageReceived(payload) {
     if (selectedUserId) {
         document.querySelector(`#${selectedUserId}`).classList.add('active');
     } else {
-        // try {
+
             messageForm.classList.add('hidden');
-        // }catch (e){}
+
     }
 
     const notifiedUser = document.querySelector(`#${message.senderId}`);
@@ -194,23 +190,12 @@ async function onMessageReceived(payload) {
     }
 }
 
-function onLogout() {
-    // stompClient.send("/app/user.disconnectUser",
-    //     {},
-    //     JSON.stringify({name: username})
-    // );
-    // window.location.;
-}
 
-// usernameForm.addEventListener('submit', connect, true);
-// try {
+
+
     window.addEventListener('load', connect);
 
     messageForm.addEventListener('submit', sendMessage, true);
-// } catch (e){}
-// try {
-    logout.addEventListener('click', onLogout, true);
-// } catch (e){}
-window.onbeforeunload = () => onLogout();
+
 
 

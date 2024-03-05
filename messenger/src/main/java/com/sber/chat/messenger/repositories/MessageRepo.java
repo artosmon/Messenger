@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface MessageRepo extends JpaRepository<Message,Long> {
 
-    Optional<List<Message>> findAllByChatId(String id);
+    Optional<List<Message>> findAllByChatId(long id);
 }

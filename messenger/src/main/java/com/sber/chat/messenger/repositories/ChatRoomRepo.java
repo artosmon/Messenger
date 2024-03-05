@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 
-public interface ChatRoomRepo extends JpaRepository<ChatRoom,String> {
+public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
 
     @Query("from ChatRoom where senderName in(?1 , ?2)  and  recipientName in (?1 ,?2)")
     Optional<ChatRoom> findBySenderNameAndRecipientName(String senderId, String recipientId);

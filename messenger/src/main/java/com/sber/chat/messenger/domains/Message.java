@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -15,12 +17,14 @@ import java.util.Date;
 @Table(name = "message")
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String chatId;
-    private String senderId;
-    private String recipientId;
-    private String content;
-    private Date timestamp;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    Long chatId;
+    String senderId; // sender's name
+    String recipientId; // recipient's name
+    String content;
+
+    @Builder.Default
+    private Instant time = Instant.now();
 
 }

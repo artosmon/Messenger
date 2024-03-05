@@ -13,10 +13,17 @@ let selectedUserId = null;
 
 
 async function connect(event) {
-    const usernameResponse = await fetch(`/username`);
-    const user = await usernameResponse.json();
-    console.log(user);
-    username = user.name;
+    username = localStorage.getItem("usernameKey");
+
+    if(username == null) {
+        const usernameResponse = await fetch(`/username`);
+        const user = await usernameResponse.json();
+        console.log(user);
+        username = user.name;
+
+        localStorage.setItem("usernameKey", username);
+    }
+
     if (username) {
 
         const socket = new SockJS('/ws');

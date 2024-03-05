@@ -17,10 +17,10 @@ import java.util.Optional;
 public class ChatRoomService {
 
     ChatRoomRepo chatRoomRepo;
-    public String getChatRoomId(String senderName,String recipientName) {
+    public long getChatRoomId(String senderName,String recipientName) {
 
        return chatRoomRepo.findBySenderNameAndRecipientName(senderName, recipientName)
-                .map(ChatRoom::getChatId)
+                .map(ChatRoom::getId)
                 .or( () ->
                         {
                             return Optional.of(createChat(senderName,recipientName));
@@ -29,15 +29,14 @@ public class ChatRoomService {
 
     }
 
-    private String createChat(String senderId, String recipientId) {
-        log.info("LOG:         I create chat!");
+    private long createChat(String senderId, String recipientId) {
         ChatRoom sender = ChatRoom.builder()
                 .senderName(senderId)
                 .recipientName(recipientId)
                 .build();
-
+        log.info(String.format("LOG: create chat: %s",sender.getId()));
         chatRoomRepo.save(sender);
-        return sender.getChatId();
+        return sender.getId();
     }
 
 }

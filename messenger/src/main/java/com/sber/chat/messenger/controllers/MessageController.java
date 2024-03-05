@@ -27,11 +27,13 @@ public class MessageController {
     MessageService messageService;
 
     private final String FETCH_SEND_MESSAGE_USER = "/topic/messages/users.{username}";
+    private final String FETCH_ALL_MESSAGE_FROM_CHAT = "/messages/{senderName}/{recipientName}";
+
 
     @MessageMapping("/chat")
     public void processMessage(@Payload Message message) {
         messageService.save(message);
-        log.info(String.format("LOG:    processMessage: %s",message.getRecipientId()));
+        log.info(String.format("LOG:processMessage: %s",message.getRecipientId()));
 
         simpMessagingTemplate.convertAndSend(
                 getRout(FETCH_SEND_MESSAGE_USER, message.getRecipientId()),
@@ -40,13 +42,11 @@ public class MessageController {
                         .senderId(message.getSenderId())
                         .recipientId(message.getRecipientId())
                         .content(message.getContent())
-                        .timestamp(message.getTimestamp())
                         .build()
         );
     }
 
-    @GetMapping("/messages/{senderName}/{recipientName}")
-//    @ResponseBody
+    @GetMapping(FETCH_ALL_MESSAGE_FROM_CHAT)
     public ResponseEntity<List<Message>> findChatMessage(
             @PathVariable("senderName") String senderName,
             @PathVariable("recipientName") String recipientName

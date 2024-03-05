@@ -1,5 +1,6 @@
 package com.sber.chat.messenger.services;
 
+import com.sber.chat.messenger.domains.ChatRoom;
 import com.sber.chat.messenger.domains.Message;
 import com.sber.chat.messenger.repositories.MessageRepo;
 import lombok.AccessLevel;
@@ -23,7 +24,7 @@ public class MessageService {
 
     public Message save(Message message) {
 
-        String chatId = chatRoomService.getChatRoomId(
+        long chatId = chatRoomService.getChatRoomId(
                 message.getSenderId(),
                 message.getRecipientId());
 
@@ -37,9 +38,9 @@ public class MessageService {
             String senderName,
             String recipientName
     ) {
-        String chatId = chatRoomService.getChatRoomId(senderName,recipientName);
+        long chatId = chatRoomService.getChatRoomId(senderName,recipientName);
         List<Message> list = messageRepo.findAllByChatId(chatId).orElse(new ArrayList<>());
-        log.info(String.format("LOG:         list of messages: %s", Arrays.toString(list.toArray())));
+        log.info(String.format("LOG: list of messages: %s", Arrays.toString(list.toArray())));
         return list;
 
     }

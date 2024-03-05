@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-import java.util.UUID;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,8 +14,8 @@ import java.util.UUID;
 public class ChatRoom {
 
     @Id
-    @Builder.Default
-    String chatId = UUID.randomUUID().toString().substring(0,4);
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     String senderName;
     String recipientName;
 
