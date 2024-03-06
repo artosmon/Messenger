@@ -41,10 +41,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @GetMapping("/username")
-    public ResponseEntity<User> sendUsername() {
-        log.info("     LOG username:"+MyUserDetailsService.sentUsername.getName());
-        return ResponseEntity.ok(MyUserDetailsService.sentUsername);
-    }
+
 
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-const usernameFormSign = document.querySelector('#usernameFormSign');
+const usernameFormSign = document.querySelector('#usernameForm');
 
 
 let username = null;
@@ -8,11 +8,10 @@ let password = null;
 
 
 async function authorization(event) {
-    username = document.querySelector('#usernameS').value.trim();
-    password = document.querySelector('#passwordS').value.trim();
+    username = document.querySelector('#username').value.trim();
+    password = document.querySelector('#password').value.trim();
 
     if (username && password) {
-
         const url = '/user.addUser';
         const data = {name: username, password: password};
 

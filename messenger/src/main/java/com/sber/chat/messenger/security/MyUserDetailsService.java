@@ -20,12 +20,10 @@ import java.util.Optional;
 public class MyUserDetailsService implements UserDetailsService {
 
     UserRepo userRepo;
-    public static User sentUsername;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Optional<User> user = userRepo.findByName(username);
-        sentUsername = user.get();
         return user.map(MyUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException(username + " not found"));
     }

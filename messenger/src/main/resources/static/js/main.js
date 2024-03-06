@@ -5,7 +5,6 @@ const messageForm = document.querySelector('#messageForm');
 const messageInput = document.querySelector('#message');
 const connectingElement = document.querySelector('.connecting');
 const chatArea = document.querySelector('#chat-messages');
-const logout = document.querySelector('#logout');
 
 let username = null;
 let stompClient = null;
@@ -15,16 +14,8 @@ let selectedUserId = null;
 async function connect(event) {
     username = localStorage.getItem("usernameKey");
 
-    if(username == null) {
-        const usernameResponse = await fetch(`/username`);
-        const user = await usernameResponse.json();
-        console.log(user);
-        username = user.name;
 
-        localStorage.setItem("usernameKey", username);
-    }
-
-    if (username) {
+    if (username != null) {
 
         const socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
@@ -193,9 +184,11 @@ async function onMessageReceived(payload) {
 
 
 
+
+
     window.addEventListener('load', connect);
 
-    messageForm.addEventListener('submit', sendMessage, true);
 
+    messageForm.addEventListener('submit', sendMessage, true);
 
 
