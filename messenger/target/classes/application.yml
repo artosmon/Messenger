@@ -2,7 +2,7 @@
 
 spring:
     rabbitmq:
-      host: localhost
+      host: localhost:8080
       username: guest
       password: guest
     jpa:
@@ -12,6 +12,6 @@ spring:
         ddl-auto: create
     datasource:
       url: jdbc:postgresql://localhost:5432/database?
-      username: admin
-      password: admin
+      username: postgres
+      password: 1
       driver-class-name: org.postgresql.Driver

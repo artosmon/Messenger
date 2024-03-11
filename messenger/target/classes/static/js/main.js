@@ -2,11 +2,9 @@
 
 
 const messageForm = document.querySelector('#messageForm');
-const usernameForm = document.querySelector('#usernameForm');
 const messageInput = document.querySelector('#message');
 const connectingElement = document.querySelector('.connecting');
 const chatArea = document.querySelector('#chat-messages');
-const logout = document.querySelector('#logout');
 
 let username = null;
 let stompClient = null;
@@ -183,10 +181,6 @@ async function onMessageReceived(payload) {
     }
 }
 
-    function endSession() {
-        localStorage.setItem("usernameKey", null);
-    }
-
 
 
 
@@ -196,6 +190,5 @@ async function onMessageReceived(payload) {
 
 
     messageForm.addEventListener('submit', sendMessage, true);
-    logout.addEventListener('submit',endSession,true);
 
 
