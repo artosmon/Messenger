@@ -1,7 +1,9 @@
 package com.sber.chat.messenger.services;
 
 import com.sber.chat.messenger.domains.ChatRoom;
+import com.sber.chat.messenger.domains.User;
 import com.sber.chat.messenger.repositories.ChatRoomRepo;
+import com.sber.chat.messenger.repositories.UserRepo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,26 +19,31 @@ import java.util.Optional;
 public class ChatRoomService {
 
     ChatRoomRepo chatRoomRepo;
-    public long getChatRoomId(String senderName,String recipientName) {
+    UserService userService;
+    public long getChatRoomId(String firstName,String secondName) {
 
-       return chatRoomRepo.findBySenderNameAndRecipientName(senderName, recipientName)
+        return chatRoomRepo.findByUserFirstNameAndUserSecondName(firstName, secondName)
                 .map(ChatRoom::getId)
                 .or( () ->
                         {
-                            return Optional.of(createChat(senderName,recipientName));
+                            return Optional.of(createChat(firstName,secondName));
                         }
                 ).get();
 
     }
 
-    private long createChat(String senderId, String recipientId) {
-        ChatRoom sender = ChatRoom.builder()
-                .senderName(senderId)
-                .recipientName(recipientId)
+    private long createChat(String firstUserName, String secondUserName) {
+        ChatRoom chat = ChatRoom.builder()
+                .userFirst(userService.getUserByName(firstUserName))
+                .userSecond(userService.getUserByName(secondUserName))
                 .build();
-        log.info(String.format("LOG: create chat: %s",sender.getId()));
-        chatRoomRepo.save(sender);
-        return sender.getId();
+        chatRoomRepo.save(chat);
+        log.info(String.format("LOG: create chat: %s",chat.getId()));
+        return chat.getId();
+    }
+
+    public ChatRoom getChatRoomById(long id) {
+        return chatRoomRepo.findById(id).orElseThrow(RuntimeException::new);
     }
 
 }

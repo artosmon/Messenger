@@ -1,6 +1,6 @@
 package com.sber.chat.messenger.controllers;
 
-import com.sber.chat.messenger.domains.Message;
+import com.sber.chat.messenger.dto.MessageDto;
 import com.sber.chat.messenger.services.MessageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,28 +26,26 @@ public class MessageController {
     SimpMessagingTemplate simpMessagingTemplate;
     MessageService messageService;
 
-    private final String FETCH_SEND_MESSAGE_USER = "/topic/messages/users.{username}";
+    private final String FETCH_SEND_MESSAGE_USER = "/topic/messages.users.{username}";
     private final String FETCH_ALL_MESSAGE_FROM_CHAT = "/messages/{senderName}/{recipientName}";
+    private final String FETCH_SEND_MESSAGE_CHAT = "/send.message";
 
 
-    @MessageMapping("/chat")
-    public void processMessage(@Payload Message message) {
-        messageService.save(message);
-        log.info(String.format("LOG:processMessage: %s",message.getRecipientId()));
+
+    @MessageMapping(FETCH_SEND_MESSAGE_CHAT)
+    public void processMessage(@Payload MessageDto messageDto) {
+
+        messageService.save(messageDto);
+        log.info(String.format("LOG:processMessage: %s",messageDto.getContent()));
 
         simpMessagingTemplate.convertAndSend(
-                getRout(FETCH_SEND_MESSAGE_USER, message.getRecipientId()),
-                Message.builder()
-                        .chatId(message.getChatId())
-                        .senderId(message.getSenderId())
-                        .recipientId(message.getRecipientId())
-                        .content(message.getContent())
-                        .build()
+                getRout(FETCH_SEND_MESSAGE_USER, messageDto.getRecipientId()),
+                messageDto
         );
     }
 
     @GetMapping(FETCH_ALL_MESSAGE_FROM_CHAT)
-    public ResponseEntity<List<Message>> findChatMessage(
+    public ResponseEntity<List<MessageDto>> findChatMessage(
             @PathVariable("senderName") String senderName,
             @PathVariable("recipientName") String recipientName
     ) {

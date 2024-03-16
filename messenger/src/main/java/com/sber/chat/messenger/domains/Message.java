@@ -19,12 +19,21 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    Long chatId;
-    String senderId; // sender's name
-    String recipientId; // recipient's name
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    ChatRoom chat;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_name",referencedColumnName="name")
+    User sender;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipient_name",referencedColumnName="name")
+    User recipient;
+
     String content;
 
     @Builder.Default
-    private Instant time = Instant.now();
+    Instant time = Instant.now();
 
 }

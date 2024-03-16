@@ -20,20 +20,23 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Value("${spring.rabbitmq.password}")
     String password;
+
+    @Value("${spring.rabbitmq.port}")
+    int port;
 //
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic");
-        registry.setApplicationDestinationPrefixes("/app");
-
-//        registry.enableStompBrokerRelay("/topic")
-//                .setRelayHost(host)
-//                .setRelayPort(5672)
-//                .setClientLogin(username)
-//                .setClientPasscode(password)
-//                .setSystemLogin(username)
-//                .setSystemPasscode(password);
+//        registry.enableSimpleBroker("/topic");
 //        registry.setApplicationDestinationPrefixes("/app");
+
+        registry.enableStompBrokerRelay("/topic")
+                .setRelayHost(host)
+                .setRelayPort(port)
+                .setClientLogin(username)
+                .setClientPasscode(password)
+                .setSystemLogin(username)
+                .setSystemPasscode(password);
+        registry.setApplicationDestinationPrefixes("/app");
     }
 
     @Override

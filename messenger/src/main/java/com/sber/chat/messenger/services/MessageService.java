@@ -1,7 +1,7 @@
 package com.sber.chat.messenger.services;
 
-import com.sber.chat.messenger.domains.ChatRoom;
 import com.sber.chat.messenger.domains.Message;
+import com.sber.chat.messenger.dto.MessageDto;
 import com.sber.chat.messenger.repositories.MessageRepo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -21,27 +22,47 @@ public class MessageService {
 
     MessageRepo messageRepo;
     ChatRoomService chatRoomService;
+    UserService userService;
+    public Message save(MessageDto messageDto) {
 
-    public Message save(Message message) {
 
         long chatId = chatRoomService.getChatRoomId(
-                message.getSenderId(),
-                message.getRecipientId());
+                messageDto.getSenderId(),
+                messageDto.getRecipientId());
 
-        message.setChatId(chatId);
+        Message message = Message.builder()
+                .chat(chatRoomService.getChatRoomById(chatId))
+                .sender(userService.getUserByName(messageDto.getSenderId()))
+                .recipient(userService.getUserByName(messageDto.getRecipientId()))
+                .content(messageDto.getContent())
+                .build();
+
+        messageDto.setChatId(chatId);
+
         messageRepo.save(message);
         return message;
 
     }
 
-    public List<Message> findMessages(
+    public List<MessageDto> findMessages(
             String senderName,
             String recipientName
     ) {
         long chatId = chatRoomService.getChatRoomId(senderName,recipientName);
         List<Message> list = messageRepo.findAllByChatId(chatId).orElse(new ArrayList<>());
+
         log.info(String.format("LOG: list of messages: %s", Arrays.toString(list.toArray())));
-        return list;
+
+        return list.stream().map(m ->{
+            return MessageDto.builder()
+            .chatId(m.getChat()
+                    .getId())
+                    .senderId(m.getSender().getName())
+                    .recipientId(m.getRecipient().getName())
+                    .content(m.getContent())
+                    .time(m.getTime())
+                    .build();
+        }).collect(Collectors.toList());
 
     }
 

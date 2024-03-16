@@ -31,6 +31,7 @@ public class UserController {
     @PostMapping(FETCH_ADD_USER)
     @ResponseBody
     public User addUser(@RequestBody User user) {
+        log.info("LOG:addUser");
         userService.saveUser(user);
         return user;
     }

@@ -34,6 +34,10 @@ public class UserService {
         return userRepo.findAll();
     }
 
+    public User getUserByName(String name) {
+        return userRepo.findByName(name).orElseThrow(RuntimeException::new);
+    }
+
 
 }
 

@@ -32,7 +32,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/**").authenticated())
                 .formLogin((form) -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/index",true)
+                        .defaultSuccessUrl("/chat",true)
                         .permitAll())
 			.logout(LogoutConfigurer::permitAll)
                 .build();

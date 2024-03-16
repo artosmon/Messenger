@@ -29,8 +29,7 @@ async function connect(event) {
 
 
 function onConnected() {
-    stompClient.subscribe(`/topic/messages/users.${username}`, onMessageReceived);
-    stompClient.subscribe(`/topic.addUser`, onMessageReceived);
+    stompClient.subscribe(`/topic/messages.users.${username}`, onMessageReceived);
 
     try {
         document.querySelector('#connected-user-fullname').textContent = username;
@@ -105,7 +104,6 @@ function userItemClick(event) {
 
 function displayMessage(senderId, content) {
     const messageContainer = document.createElement('div');
-    console.log('displayMessage');
     messageContainer.classList.add('message');
     if (senderId === username) {
         messageContainer.classList.add('sender');
@@ -122,7 +120,6 @@ async function fetchAndDisplayUserChat() {
     const userChatResponse = await fetch(`/messages/${username}/${selectedUserId}`);
     const userChat = await userChatResponse.json();
     chatArea.innerHTML = '';
-    console.log('fetchAndDisplayUserChat')
     userChat.forEach(chat => {
         displayMessage(chat.senderId, chat.content);
     });
@@ -143,9 +140,8 @@ function sendMessage(event) {
             senderId: username,
             recipientId: selectedUserId,
             content: messageInput.value.trim(),
-            timestamp: new Date()
         };
-        stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/send.message", {}, JSON.stringify(chatMessage));
         console.log('sendMessage');
         displayMessage(username, messageInput.value.trim());
         messageInput.value = '';

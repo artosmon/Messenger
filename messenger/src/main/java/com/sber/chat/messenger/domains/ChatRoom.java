@@ -16,7 +16,13 @@ public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String senderName;
-    String recipientName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "first_user_name",referencedColumnName="name")
+    User userFirst;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "second_user_name",referencedColumnName="name")
+    User userSecond;
 
 }

@@ -7,7 +7,7 @@ let username = null;
 let password = null;
 
 
-async function authorization(event) {
+async function registration(event) {
     username = document.querySelector('#username').value.trim();
     password = document.querySelector('#password').value.trim();
 
@@ -34,4 +34,4 @@ async function authorization(event) {
 
 
 
-usernameFormSign.addEventListener('submit', authorization, true);
+usernameFormSign.addEventListener('submit', registration, true);

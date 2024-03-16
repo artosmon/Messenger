@@ -3,20 +3,27 @@ version: '3'
 services:
   app:
     image: 'docker-spring-boot-postgres:latest'
+    restart: always
     build:
       context: .
     container_name: app
     ports:
-      - 80:8080
+      - "8080:8080"
     depends_on:
       - db
+      - rabbitmq
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/database
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-
-
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+  flyway:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://db:5432/database -schemas=public -user=admin -password=admin migrate
+    volumes:
+      - ./migration:/flyway/sql
+    depends_on:
+      - db
   db:
     image: 'postgres:16'
     container_name: db
@@ -24,3 +31,18 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=database
+  rabbitmq:
+    image: jorgeacetozi/rabbitmq-stomp:3.6
+    container_name: rabbitmq
+    hostname: rabbitmq
+    environment:
+        - RABBITMQ_DEFAULT_USER=guest
+        - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "15672:15672"
+      - "61613:61613"
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "61613" ]
+      interval: 5s
+      timeout: 20s
+      retries: 5
