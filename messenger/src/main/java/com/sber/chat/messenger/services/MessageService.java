@@ -53,17 +53,14 @@ public class MessageService {
 
         log.info(String.format("LOG: list of messages: %s", Arrays.toString(list.toArray())));
 
-        return list.stream().map(m ->{
-            return MessageDto.builder()
-            .chatId(m.getChat()
-                    .getId())
-                    .senderId(m.getSender().getName())
-                    .recipientId(m.getRecipient().getName())
-                    .content(m.getContent())
-                    .time(m.getTime())
-                    .build();
-        }).collect(Collectors.toList());
-
+        return list.stream().map(m -> MessageDto.builder()
+        .chatId(m.getChat()
+                .getId())
+                .senderId(m.getSender().getName())
+                .recipientId(m.getRecipient().getName())
+                .content(m.getContent())
+                .time(m.getTime())
+                .build()).collect(Collectors.toList());
     }
 
 

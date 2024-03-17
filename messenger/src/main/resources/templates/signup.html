@@ -12,7 +12,7 @@
 
 <div class="user-form" id="username-page">
     <h2>Регистрация:</h2>
-    <form id="usernameForm" method="post">
+    <form id="usernameForm" action="signup.js" method="POST">
 
         <label for="username">Введите логин:</label>
         <input type="text" id="username" name="username" required>
@@ -20,10 +20,9 @@
         <label for="password">Введите пароль:</label>
         <input type="password" id="password" name="password" required>
 
-        <button type="submit">Зарегистрироваться </button>
+        <button type="submit">Зарегистрироваться</button>
         <br>
         <br>
-
         <button onclick="location.href='/login'" type="button">
             Уже есть аккаунт?</button>
 

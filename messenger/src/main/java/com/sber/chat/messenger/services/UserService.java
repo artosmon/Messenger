@@ -28,6 +28,9 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepo.save(user);
         }
+        else {
+            log.info(String.format("LOG: User: %s not saved",user.getName()));
+        }
     }
 
     public List<User> getAllUsers() {
