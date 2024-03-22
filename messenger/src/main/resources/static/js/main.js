@@ -12,8 +12,8 @@ let selectedUserId = null;
 
 
 async function connect(event) {
-    username = localStorage.getItem("usernameKey");
 
+    username = localStorage.getItem("usernameKey");
 
     if (username != null) {
 
@@ -30,6 +30,7 @@ async function connect(event) {
 
 function onConnected() {
     stompClient.subscribe(`/topic/messages.users.${username}`, onMessageReceived);
+    // stompClient.subscribe(`/topic/notifications.users.${username}`, NotificationSend);
 
     try {
         document.querySelector('#connected-user-fullname').textContent = username;
@@ -38,15 +39,22 @@ function onConnected() {
 }
 
 async function DisplayUsers() {
+
     const connectedUsersResponse = await fetch('/users');
+    const loggedUsersResponse = await fetch('/users.loggedUsers');
+    const notificationsResponse = await fetch('/user.getAllNotifications');
+
+    let notifications = await notificationsResponse.json();
     let connectedUsers = await connectedUsersResponse.json();
+    let loggedUsers = await loggedUsersResponse.json();
+
     connectedUsers = connectedUsers.filter(user => user.name !== username);
     const connectedUsersList = document.getElementById('connectedUsers');
 
         connectedUsersList.innerHTML = '';
 
     connectedUsers.forEach(user => {
-        appendUserElement(user, connectedUsersList);
+        appendUserElement(user, connectedUsersList,loggedUsers,notifications);
         if (connectedUsers.indexOf(user) < connectedUsers.length - 1) {
             const separator = document.createElement('li');
             separator.classList.add('separator');
@@ -55,7 +63,10 @@ async function DisplayUsers() {
     });
 }
 
-function appendUserElement(user, connectedUsersList) {
+function appendUserElement(user, connectedUsersList, loggedUsers,notifications) {
+
+
+
     const listItem = document.createElement('li');
     listItem.classList.add('user-item');
     listItem.id = user.name;
@@ -67,20 +78,40 @@ function appendUserElement(user, connectedUsersList) {
     const usernameSpan = document.createElement('span');
     usernameSpan.textContent = user.name;
 
+
     const receivedMsgs = document.createElement('span');
-    receivedMsgs.textContent = '0';
-    receivedMsgs.classList.add('nbr-msg', 'hidden');
-
-        listItem.appendChild(userImage);
-
-        listItem.appendChild(usernameSpan);
-
-        listItem.appendChild(receivedMsgs);
-
-        listItem.addEventListener('click', userItemClick);
+    // receivedMsgs.textContent = '0';
 
 
-        connectedUsersList.appendChild(listItem);
+    notifications = notifications.filter(n => n.senderId === user.name);
+
+
+    if (notifications.length === 0)
+        receivedMsgs.classList.add('nbr-msg', 'hidden');
+    else
+        receivedMsgs.classList.add('nbr-msg');
+
+
+    const onlineStatus = document.createElement('span');
+
+    if (loggedUsers.indexOf(user.name) === -1) {
+        onlineStatus.classList.add('onl-st', 'hidden');
+    } else {
+        onlineStatus.classList.add('onl-st');
+    }
+
+    listItem.appendChild(onlineStatus);
+
+    listItem.appendChild(userImage);
+
+    listItem.appendChild(usernameSpan);
+
+    listItem.appendChild(receivedMsgs);
+
+    listItem.addEventListener('click', userItemClick);
+
+
+    connectedUsersList.appendChild(listItem);
 
 }
 
@@ -95,6 +126,11 @@ function userItemClick(event) {
 
     selectedUserId = clickedUser.getAttribute('id');
     fetchAndDisplayUserChat().then();
+
+    const notificationId = selectedUserId + '_' + username;
+    const deletedNotification = {recipientId: username,id: notificationId};
+
+    stompClient.send("/app/user.deleteNotification",{},JSON.stringify(deletedNotification));
 
     const nbrMsg = clickedUser.querySelector('.nbr-msg');
     nbrMsg.classList.add('hidden');
@@ -143,9 +179,14 @@ function sendMessage(event) {
         };
         stompClient.send("/app/send.message", {}, JSON.stringify(chatMessage));
         console.log('sendMessage');
+
+        const notification = {senderId: username, recipientId: selectedUserId};
+        stompClient.send("/app/user.saveNotification", {}, JSON.stringify(notification));
+
         displayMessage(username, messageInput.value.trim());
         messageInput.value = '';
     }
+
     chatArea.scrollTop = chatArea.scrollHeight;
     event.preventDefault();
 }
@@ -171,11 +212,16 @@ async function onMessageReceived(payload) {
 
     const notifiedUser = document.querySelector(`#${message.senderId}`);
     if (notifiedUser && !notifiedUser.classList.contains('active')) {
+
         const nbrMsg = notifiedUser.querySelector('.nbr-msg');
         nbrMsg.classList.remove('hidden');
         nbrMsg.textContent = '';
     }
 }
+
+// function NotificationSend(payload) {
+//
+// }
 
 
 
@@ -183,7 +229,6 @@ async function onMessageReceived(payload) {
 
 
     window.addEventListener('load', connect);
-
 
     messageForm.addEventListener('submit', sendMessage, true);
 

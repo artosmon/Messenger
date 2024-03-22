@@ -1,18 +1,22 @@
 ---
 
 spring:
-    rabbitmq:
+  rabbitmq:
       host: rabbitmq
       username: guest
       password: guest
       port: 61613
-    jpa:
+  jpa:
       database: POSTGRESQL
       show-sql: true
       hibernate:
         ddl-auto: validate
-    datasource:
+  datasource:
       url: jdbc:postgresql://db:5432/database?
       username: admin
       password: admin
       driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: redis
+      port: 6379

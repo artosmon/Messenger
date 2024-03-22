@@ -46,3 +46,16 @@ services:
       interval: 5s
       timeout: 20s
       retries: 5
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis:3.2
+    restart: always
+#    entrypoint: redis-server --appendonly yes --requirepass $REDIS_PASSWORD --maxmemory 512mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+#    environment:
+#      - REDIS_PASSWORD=my-password
+#      - REDIS_DATABASES=16
+
+

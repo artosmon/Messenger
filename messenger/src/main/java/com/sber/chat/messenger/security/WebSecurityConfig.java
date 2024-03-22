@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .defaultSuccessUrl("/chat",true)
                         .permitAll())
-			.logout(LogoutConfigurer::permitAll)
+			    .logout(LogoutConfigurer::permitAll)
                 .build();
     }
 

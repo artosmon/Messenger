@@ -113,13 +113,22 @@ body {
 }
 
 .user-item span.nbr-msg {
-    margin-left: 10px;
-    background-color: #f8fa6f;
+    margin-left: 25px;
+    background-color: #00aeff;
     color: white;
     padding: 5px;
-    width: 10px;
+    width: 5px;
     border-radius: 50%;
-    height: 10px;
+    height: 5px;
+}
+.user-item span.onl-st {
+    margin-right: 15px;
+    background-color: #1aff00;
+    color: white;
+    padding: 5px;
+    width: 5px;
+    border-radius: 50%;
+    height: 5px;
 }
 
 .sender {

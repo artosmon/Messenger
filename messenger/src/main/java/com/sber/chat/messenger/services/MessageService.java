@@ -51,8 +51,6 @@ public class MessageService {
         long chatId = chatRoomService.getChatRoomId(senderName,recipientName);
         List<Message> list = messageRepo.findAllByChatId(chatId).orElse(new ArrayList<>());
 
-        log.info(String.format("LOG: list of messages: %s", Arrays.toString(list.toArray())));
-
         return list.stream().map(m -> MessageDto.builder()
         .chatId(m.getChat()
                 .getId())

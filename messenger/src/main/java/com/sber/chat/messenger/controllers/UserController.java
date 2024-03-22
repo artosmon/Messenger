@@ -19,8 +19,9 @@ public class UserController {
 
     UserService userService;
 
-
     private final String FETCH_ADD_USER = "/user.addUser";
+    private final String FETCH_GET_LOGGED_USERS ="/users.loggedUsers";
+    private final String FETCH_GET_ALL_USERS = "/users";
 
     @PostMapping(FETCH_ADD_USER)
     public User addUser(@RequestBody User user) {
@@ -29,10 +30,15 @@ public class UserController {
         return user;
     }
 
-
-    @GetMapping("/users")
+    @GetMapping(FETCH_GET_ALL_USERS)
     public List<User> findAllUsers() {
         return userService.getAllUsers();
+    }
+
+
+    @GetMapping(FETCH_GET_LOGGED_USERS)
+    public List<String > getLoggedUsers() {
+        return userService.getUsersOnline();
     }
 
 
