@@ -30,7 +30,6 @@ async function connect(event) {
 
 function onConnected() {
     stompClient.subscribe(`/topic/messages.users.${username}`, onMessageReceived);
-    // stompClient.subscribe(`/topic/notifications.users.${username}`, NotificationSend);
 
     try {
         document.querySelector('#connected-user-fullname').textContent = username;

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -25,7 +24,6 @@ import java.util.Map;
 public class NotificationController {
 
     NotificationService notificationService;
-//    private final String SEND_NOTIFICATIONS_TO_USER = "/topic/notifications.users.{username}";
     private final String FETCH_NOTIFICATIONS_USER = "/user.getAllNotifications";
     private final String FETCH_GET_NOTIFICATION_USER = "/user.saveNotification";
     private final String FETCH_DELETE_NOTIFICATION_USER = "/user.deleteNotification";

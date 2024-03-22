@@ -28,14 +28,6 @@ public class RedisConfig {
 
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, port);
 
-//        if (!password.trim().isEmpty()) {
-//            redisStandaloneConfiguration.setPassword(password);
-//        }
-//
-//        if (redisDatabase > 0) {
-//            redisStandaloneConfiguration.setDatabase(redisDatabase);
-//        }
-
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
 
