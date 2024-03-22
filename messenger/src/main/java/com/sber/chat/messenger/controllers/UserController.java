@@ -24,10 +24,9 @@ public class UserController {
     private final String FETCH_GET_ALL_USERS = "/users";
 
     @PostMapping(FETCH_ADD_USER)
-    public User addUser(@RequestBody User user) {
+    public void addUser(@RequestBody User user) {
         log.info("LOG:saving user...");
         userService.saveUser(user);
-        return user;
     }
 
     @GetMapping(FETCH_GET_ALL_USERS)
