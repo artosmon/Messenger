@@ -16,13 +16,7 @@ async function registration(event) {
         const data = {name: username, password: password};
 
         try {
-            // const response = await fetch(url, {
-            //     method: 'POST',
-            //     body: JSON.stringify(data),
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // });
+
             var xhr = new XMLHttpRequest();
             xhr.open("POST", url, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
